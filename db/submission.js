@@ -115,9 +115,30 @@ function getOptions(model) {
     });
 }
 
+function postMarks(model) {
+    return new Promise((resolve,reject) => {
+        if(model.email && model.club_id && model.domain) {
+            sqlconnection().then((connection) => {
+                model.connection = connection;
+                let sqlquery = "insert into club_option_map values(?,?,?,?);";
+                model.connection.query(sqlquery, [model.email,model.club_id,model.domain,model.marks_secured], (error, results) => {
+                    model.connection.release();
+                    if (error) {
+                        return reject(error);
+                    }
+                    else {
+                        return resolve({"success":true,"marks": model.marks_secured});
+                    }
+                });
+            });
+        }
+    });
+}
+
 module.exports = {
     sumbission,
     getQuestions,
     postAnswers,
-    getOptions
+    getOptions,
+    postMarks
 };

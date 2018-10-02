@@ -53,7 +53,25 @@ function getQuestion(model) {
     });
 }
 
+function postAnswers(model) {
+    return new Promise((resolve,reject) => {
+        submissionGet.postAnswers(model).then((data) => {
+            if(data.marks) {
+                model["marks_secured"] = data.marks;
+                submissionGet.postMarks(model).then((postedData) => {
+                    return resolve(postedData);
+                }).catch((error) => {
+                    return reject(error);
+                });
+            }
+        }).catch((error) => {
+            return reject(error);
+        });
+    });
+}
+
 module.exports = {
     getSubmissions,
-    getQuestion
+    getQuestion,
+    postAnswers
 };

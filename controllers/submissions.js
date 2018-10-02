@@ -19,6 +19,16 @@ router.post('/getQues',(req,res) => {
     }).catch((error) => {
         res.send({"success": false, "message" : error})
     });
-})
+});
+
+router.post('/postAnswers',(req,res) => {
+    let body = req.body;
+    console.log(body);
+    submissionsBIZ.postAnswers(body).then((data) => {
+        res.send(data);
+    }).catch((error) => {
+        return reject(error);
+    });
+});
 
 module.exports = router;

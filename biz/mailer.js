@@ -20,8 +20,8 @@ function sendOTP(otp,recipient) {
             return resolve(info);
         }).catch((error) => {
             return reject(error);
-        })
-    })
+        });
+    });
 }
 
 
