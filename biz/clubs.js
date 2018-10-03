@@ -3,11 +3,16 @@ var clubsDB = require('../db/clubs');
 function getUpcoming(model) {
     return new Promise((resolve, reject) => {
         let date = new Date();
-        date.setDate(date.getDate(), 1);
-        let date2 = date.setDate(date.getDate(), 10);
         
-        let query = `select * from clubs where start_date between ${date} and ${date2};`;
-        clubsDB.listings(model, query).then((data) => {
+        date = formatDate(date);
+        let date2 = new Date();
+        date2.setDate(date2.getDate()+10);
+        date2 = formatDate(date2);
+        console.log(date);
+        console.log(date2);
+        let z = [date,date2];
+        let query = `select * from clubs where start_date > ? and end_date < ?;`;
+        clubsDB.listings(model, query,z).then((data) => {
             return resolve(data);
         }).catch((error) => {
             return reject(error);
@@ -18,7 +23,8 @@ function getUpcoming(model) {
 function getAll(model) {
     return new Promise((resolve, reject) => {
         let query = "select * from clubs";
-        clubsDB.listings(model, query).then((data) => {
+        let z = []
+        clubsDB.listings(model, query,z).then((data) => {
             return resolve(data);
         }).catch((error) => {
             return reject(error);
@@ -29,8 +35,10 @@ function getAll(model) {
 function getLive(model) {
     return new Promise((resolve, reject) => {
         let date = new Date();
-        let query = `select * from clubs where start_date > ${date} && end_date < ${date}`;
-        clubs.listings(model, query).then((data) => {
+        date = formatDate(date);
+        let query = "select * from clubs where start_date < ? and end_date > ?;"
+        let z = [date,date]
+        clubsDB.listings(model, query,z).then((data) => {
             return resolve(data);
         }).catch((error) => {
             return reject(error);
@@ -38,8 +46,16 @@ function getLive(model) {
     });
 }
 
-function getClubID() {
-    
+function formatDate(date) {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+
+    return [year, month, day].join('-');
 }
 
 module.exports = {

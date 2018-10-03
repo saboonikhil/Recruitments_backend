@@ -1,11 +1,11 @@
 var sqlconnection = require('./../sqlConnection');
 
-function listings(model,query) {
+function listings(model,query,z) {
     return new Promise((resolve, reject) => {
         sqlconnection().then((connection) => {
             model.connection = connection;
             let sqlquery = query;
-            model.connection.query(sqlquery,[], (error, results) => {
+            model.connection.query(sqlquery,z, (error, results) => {
                 model.connection.release();
                 if (error) {
                     return reject(error);

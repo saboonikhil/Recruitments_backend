@@ -40,9 +40,7 @@ function getQuestion(model) {
                     }).catch((error) => {
                         return reject(error);
                     });
-                    
                 }
-
                 else {
                     return resolve({"success":true, "message": "No questions found"});
                 }
