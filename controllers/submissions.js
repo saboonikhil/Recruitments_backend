@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var submissionsBIZ = require('../biz/submissions');
 
-router.post('/getSubmssion',(req,res) => {
+router.post('/getSubmission',(req,res) => {
     let body = req.body;
     submissionsBIZ.getSubmissions(body).then((data) => {
         res.send(data);

@@ -5,7 +5,7 @@ function sumbission(model) {
         if(model.regno) {
             sqlconnection().then((connection) => {
                 model.connection = connection;
-                let sqlquery = "select * from student_submission_map where regno = ?";
+                let sqlquery = "select * from student_submission_map where regno = ? order by club_id";
                 model.connection.query(sqlquery, [model.regno], (error, results) => {
                     model.connection.release();
                     if (error) {
@@ -15,7 +15,7 @@ function sumbission(model) {
                         return resolve({"success":true,"data": results});
                     }
                     else {
-                        return resolve(false);
+                        return resolve({"success":true,"message": "No submissions found"});
                     }
                 });
             });
