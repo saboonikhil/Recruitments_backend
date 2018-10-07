@@ -13,48 +13,45 @@ function getSubmissions(model) {
 
 function getQuestion(model) {
     return new Promise((resolve, reject) => {
-        clubsDB.getClub(model).then((data) => {
-            model["club_id"] = data.data["id"];
-            submissionGet.getQuestions(model).then((data) => {
-                let questions = []
-                let indices = []
-                if (data.data) {
-                    for (var i = 0; i < data.data.length; i++) {
-                        let index = Math.floor(Math.random() * data.data.length);
-                        if (indices.indexOf(index+1) == -1) {
-                            indices[i] = index+1;
-                            questions[i] = data.data[index];
-                        }
-                        else {
-                            i=i-1;
-                        }
-
-                        if(questions.length == 10) {
-                            break;
-                        }
+        console.log("request");
+        model["club_id"] = model.id;
+        submissionGet.getQuestions(model).then((data) => {
+            let questions = []
+            let indices = []
+            if (data.data) {
+                for (var i = 0; i < data.data.length; i++) {
+                    let index = Math.floor(Math.random() * data.data.length);
+                    if (indices.indexOf(index + 1) == -1) {
+                        indices[i] = index + 1;
+                        questions[i] = data.data[index];
                     }
-                    model["questionList"] = indices;
-                    console.log(indices);
-                    submissionGet.getOptions(model).then((optionsData) => {
-                        return resolve({"success":true, "data":questions, "options": optionsData.data});
-                    }).catch((error) => {
-                        return reject(error);
-                    });
+                    else {
+                        i = i - 1;
+                    }
+
+                    if (questions.length == 10) {
+                        break;
+                    }
                 }
-                else {
-                    return resolve({"success":true, "message": "No questions found"});
-                }
-            }).catch((error) => {
-                return reject(error);
-            });
+                model["questionList"] = indices;
+                console.log(indices);
+                submissionGet.getOptions(model).then((optionsData) => {
+                    return resolve({ "success": true, "data": questions, "options": optionsData.data });
+                }).catch((error) => {
+                    return reject(error);
+                });
+            }
+            else {
+                return resolve({ "success": true, "message": "No questions found" });
+            }
         });
     });
 }
 
 function postAnswers(model) {
-    return new Promise((resolve,reject) => {
+    return new Promise((resolve, reject) => {
         submissionGet.postAnswers(model).then((data) => {
-            if(data.marks) {
+            if (data.marks) {
                 model["marks_secured"] = data.marks;
                 submissionGet.postMarks(model).then((postedData) => {
                     return resolve(postedData);
