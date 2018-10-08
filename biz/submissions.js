@@ -49,7 +49,6 @@ function getQuestion(model) {
 function postAnswers(model) {
     return new Promise((resolve, reject) => {
         submissionGet.postAnswers(model).then((data) => {
-            console.log(data);
             if (data.data) {
                 model["marks_secured"] = data.data;
                 submissionGet.postMarks(model).then((postedData) => {

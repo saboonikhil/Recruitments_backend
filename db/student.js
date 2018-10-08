@@ -48,7 +48,6 @@ function verify(model) {
                 model.connection = connection;
                 let sqlquery = "select * from student where email = ?";
                 model.connection.query(sqlquery,[model.recipient],(error,results) => {
-                    console.log(sqlquery);
                     model.connection.release();
                     if(error) {
                         return reject(error);
