@@ -14,7 +14,6 @@ router.post('/getSubmission',(req,res) => {
 router.post('/getQues',(req,res) => {
     let body = req.body;
     submissionsBIZ.getQuestion(body).then((data) => {
-        console.log(data);
         res.send(data);
     }).catch((error) => {
         res.send({"success": false, "message" : error})
@@ -23,7 +22,6 @@ router.post('/getQues',(req,res) => {
 
 router.post('/postAnswers',(req,res) => {
     let body = req.body;
-    console.log(body);
     submissionsBIZ.postAnswers(body).then((data) => {
         res.send(data);
     }).catch((error) => {

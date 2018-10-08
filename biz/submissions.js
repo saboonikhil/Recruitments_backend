@@ -13,7 +13,6 @@ function getSubmissions(model) {
 
 function getQuestion(model) {
     return new Promise((resolve, reject) => {
-        console.log("request");
         model["club_id"] = model.id;
         submissionGet.getQuestions(model).then((data) => {
             let questions = []
@@ -34,7 +33,6 @@ function getQuestion(model) {
                     }
                 }
                 model["questionList"] = indices;
-                console.log(indices);
                 submissionGet.getOptions(model).then((optionsData) => {
                     return resolve({ "success": true, "data": questions, "options": optionsData.data });
                 }).catch((error) => {
@@ -51,8 +49,9 @@ function getQuestion(model) {
 function postAnswers(model) {
     return new Promise((resolve, reject) => {
         submissionGet.postAnswers(model).then((data) => {
-            if (data.marks) {
-                model["marks_secured"] = data.marks;
+            console.log(data);
+            if (data.data) {
+                model["marks_secured"] = data.data;
                 submissionGet.postMarks(model).then((postedData) => {
                     return resolve(postedData);
                 }).catch((error) => {

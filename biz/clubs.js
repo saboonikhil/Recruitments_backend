@@ -8,8 +8,6 @@ function getUpcoming(model) {
         let date2 = new Date();
         date2.setDate(date2.getDate()+10);
         date2 = formatDate(date2);
-        console.log(date);
-        console.log(date2);
         let z = [date,date2];
         let query = `select * from clubs where start_date > ? and end_date < ?;`;
         clubsDB.listings(model, query,z).then((data) => {

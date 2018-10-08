@@ -12,7 +12,6 @@ function listings(model,query,z) {
                 }
                 else {
                     if (results.length > 0) {
-                        console.log(results);
                         let clubs = [];
                         for(var i=0;i<results.length;i++) {
                             clubs.push(results[i]);

@@ -14,7 +14,6 @@ router.post('/student',(req,res) => {
 
 router.post('/verifyStudent',(req,res) => {
     let body = req.body;
-    console.log(body);
     studentBIZ.verifyStudent(body).then((data) => {
         res.send(data);
     }).catch((error) => {

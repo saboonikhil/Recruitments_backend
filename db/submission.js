@@ -59,25 +59,30 @@ function postAnswers(model) {
             sqlconnection().then((connection) => {
                 model.connection = connection;
                 var ques_id = [];
-                console.log(model.answers);
                 for(item in model.answers) {
-                    ques_id.append(item["id"]);
+                    let x = model.answers[item];
+                    ques_id.push(x["id"]);
                 }
                 let sqlquery = "select * from club_question_map where id in (?)";
+                ques_id = ques_id.sort();
                 model.connection.query(sqlquery, [ques_id], (error, results) => {
                     model.connection.release();
                     if (error) {
                         return reject(error);
                     }
+                    marks = 0;
                     if (results.length > 0) {
                         for(item in model.answers) {
                             for(ques in results) {
-                                if(item.id == ques.id && item.marked_answer == ques.answer) {
+                                var x = model.answers[item];
+                                var y = results[ques];
+                                if(x.id == y.id && x.marked_answer == y.answer) {
                                     marks = marks + 1;
                                     break;
                                 }
                             }
                         }
+                        console.log(marks);
                         return resolve({"success":true, "data" : marks});
                     }
                     else {
@@ -118,11 +123,11 @@ function getOptions(model) {
 
 function postMarks(model) {
     return new Promise((resolve,reject) => {
-        if(model.email && model.club_id && model.domain) {
+        if(model.email && model.id && model.domain) {
             sqlconnection().then((connection) => {
                 model.connection = connection;
                 let sqlquery = "insert into student_submission_map values(?,?,?,?);";
-                model.connection.query(sqlquery, [model.email,model.club_id,model.domain,model.marks_secured], (error, results) => {
+                model.connection.query(sqlquery, [model.email,model.id,model.domain,model.marks_secured], (error, results) => {
                     model.connection.release();
                     if (error) {
                         return reject(error);
@@ -132,6 +137,9 @@ function postMarks(model) {
                     }
                 });
             });
+        }
+        else {
+            console.log("error");
         }
     });
 }

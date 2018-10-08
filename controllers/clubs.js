@@ -14,7 +14,6 @@ router.get('/upcoming',(req,res) => {
 
 router.get('/live',(req,res) => {
     let body = req.body;
-    console.log(body);
     clubsBIZ.getLive(body).then((data) => {
         res.send(data);
     }).catch((error) => {
@@ -24,7 +23,6 @@ router.get('/live',(req,res) => {
 
 router.get('/list',(req,res) => {
     let body = req.body;
-    console.log(body);
     clubsBIZ.getAll(body).then((data) => {
         res.send(data);
     }).catch((error) => {
