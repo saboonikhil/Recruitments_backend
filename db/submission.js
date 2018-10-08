@@ -58,9 +58,10 @@ function postAnswers(model) {
             var marks = 0;
             sqlconnection().then((connection) => {
                 model.connection = connection;
-                let ques_id = [];
+                var ques_id = [];
+                console.log(model.answers);
                 for(item in model.answers) {
-                    ques_id.append(item.id);
+                    ques_id.append(item["id"]);
                 }
                 let sqlquery = "select * from club_question_map where id in (?)";
                 model.connection.query(sqlquery, [ques_id], (error, results) => {
@@ -120,7 +121,7 @@ function postMarks(model) {
         if(model.email && model.club_id && model.domain) {
             sqlconnection().then((connection) => {
                 model.connection = connection;
-                let sqlquery = "insert into club_option_map values(?,?,?,?);";
+                let sqlquery = "insert into student_submission_map values(?,?,?,?);";
                 model.connection.query(sqlquery, [model.email,model.club_id,model.domain,model.marks_secured], (error, results) => {
                     model.connection.release();
                     if (error) {
