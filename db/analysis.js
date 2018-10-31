@@ -111,9 +111,31 @@ function overview(model) {
     });
 }
 
+function domainoverview(model) {
+    return new Promise((resolve, reject) => {
+        sqlconnection().then((connection) => {
+            model.connection = connection;
+            let sqlquery = "select count (regno) from student_submission_map where domain = ? and scored >= 7 order by regno";
+            model.connection.query(sqlquery, [model.domain], (error, results) => {
+                model.connection.release();
+                if (error) {
+                    return reject(error);
+                }
+                if (results.length > 0) {
+                    return resolve({ "success": true, "data": results[0] });
+                }
+                else {
+                    return resolve({ "success": true, "message": "No submissions found" });
+                }
+            });
+        });
+    });
+}
+
 module.exports = {
     getSub,
     clubsumbission,
     getClubs,
-    overview
+    overview,
+    domainoverview
 };

@@ -39,4 +39,13 @@ router.post('/submissionoverview',(req,res) => {
     });
 });
 
+router.post('/domainoverview',(req,res) => {
+    let model = req.body;
+    analysisBIZ.domainView(model).then((result) => {
+        res.send(result);
+    }).catch((error) => {
+        res.send({"success": false, "message" : error});
+    });
+});
+
 module.exports = router;

@@ -40,9 +40,20 @@ function getOverview(model) {
     })
 }
 
+function domainView(model) {
+    return new Promise((resolve,reject) => {
+        analysis.domainoverview(model).then((data) => {
+            return resolve(data);
+        }).catch((error) => {
+            return reject(error);
+        })
+    })
+}
+
 module.exports = {
     getSubmissions,
     getClubSubmissions,
     getDistinctClubs,
-    getOverview
+    getOverview,
+    domainView
 };
