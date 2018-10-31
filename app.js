@@ -5,7 +5,6 @@ var app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-//cross origin error
 app.use(function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With,Content-Type, Accept");
@@ -24,6 +23,4 @@ app.use((error, req, res, next) => {
 
 app.listen(8000,() => {
     console.log('Server is up on port 8000');
-})
-
-// module.exports = app;
+});

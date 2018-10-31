@@ -51,6 +51,12 @@ function postAnswers(model) {
         submissionGet.postAnswers(model).then((data) => {
             if (data.data) {
                 model["marks_secured"] = data.data;
+                if(data.weak) {
+                    model["weakness"] = data.weak;
+                }
+                else {
+                    model["weakness"] = "General";
+                }
                 submissionGet.postMarks(model).then((postedData) => {
                     return resolve(postedData);
                 }).catch((error) => {

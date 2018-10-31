@@ -1,0 +1,74 @@
+var sqlconnection = require('./../sqlConnection');
+
+function getSub(model) {
+    return new Promise((resolve, reject) => {
+        sqlconnection().then((connection) => {
+            model.connection = connection;
+            let sqlquery = "select * from student_submission_map order by regno;";
+            model.connection.query(sqlquery, [model.regno], (error, results) => {
+                model.connection.release();
+                if (error) {
+                    return reject(error);
+                }
+                if (results.length > 0) {
+                    return resolve({ "success": true, "data": results, "count": results.length });
+                }
+                else {
+                    return resolve({ "success": true, "message": "No submissions found" });
+                }
+            });
+        });
+    });
+}
+
+function clubsumbission(model) {
+    return new Promise((resolve, reject) => {
+        if (model.club) {
+            sqlconnection().then((connection) => {
+                model.connection = connection;
+                let sqlquery = "select * from student_submission_map where club_id = ? order by regno";
+                model.connection.query(sqlquery, [model.club], (error, results) => {
+                    model.connection.release();
+                    if (error) {
+                        return reject(error);
+                    }
+                    if (results.length > 0) {
+                        return resolve({ "success": true, "data": results });
+                    }
+                    else {
+                        return resolve({ "success": true, "message": "No submissions found" });
+                    }
+                });
+            });
+        }
+        else {
+            return resolve({ "success": false, "message": "Invalid submission. Missing registration number" });
+        }
+    });
+}
+
+function clubsumbission(model) {
+    return new Promise((resolve, reject) => {
+        sqlconnection().then((connection) => {
+            model.connection = connection;
+            let sqlquery = "select * from student_submission_map where club_id = ? order by regno";
+            model.connection.query(sqlquery, [model.club], (error, results) => {
+                model.connection.release();
+                if (error) {
+                    return reject(error);
+                }
+                if (results.length > 0) {
+                    return resolve({ "success": true, "data": results });
+                }
+                else {
+                    return resolve({ "success": true, "message": "No submissions found" });
+                }
+            });
+        });
+    });
+}
+
+module.exports = {
+    getSub,
+    clubsumbission
+};

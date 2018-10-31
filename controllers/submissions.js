@@ -16,7 +16,7 @@ router.post('/getQues',(req,res) => {
     submissionsBIZ.getQuestion(body).then((data) => {
         res.send(data);
     }).catch((error) => {
-        res.send({"success": false, "message" : error})
+        res.send({"success": false, "message" : error});
     });
 });
 
@@ -25,7 +25,7 @@ router.post('/postAnswers',(req,res) => {
     submissionsBIZ.postAnswers(body).then((data) => {
         res.send(data);
     }).catch((error) => {
-        return reject(error);
+        res.send({"success": false, "message" : error});
     });
 });
 

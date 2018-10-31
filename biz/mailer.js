@@ -19,7 +19,7 @@ function sendOTP(otp,recipient) {
         process(mailOptions).then((info) => {
             return resolve(info);
         }).catch((error) => {
-            return reject(error);
+            return reject(eror);r
         });
     });
 }

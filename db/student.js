@@ -1,5 +1,4 @@
 var sqlconnection = require('./../sqlConnection');
-
 function createRecord(model,presence) {
     return new Promise((resolve,reject) => {
         var otp = generateOTP();

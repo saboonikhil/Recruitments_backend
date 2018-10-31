@@ -56,6 +56,7 @@ function postAnswers(model) {
     return new Promise((resolve,reject) => {
         if(model.answers) {
             var marks = 0;
+            var weakness = "";
             sqlconnection().then((connection) => {
                 model.connection = connection;
                 var ques_id = [];
@@ -71,19 +72,25 @@ function postAnswers(model) {
                         return reject(error);
                     }
                     marks = 0;
+                    var flag = 0;
                     if (results.length > 0) {
                         for(item in model.answers) {
+                            flag = 0;
                             for(ques in results) {
                                 var x = model.answers[item];
                                 var y = results[ques];
                                 if(x.id == y.id && x.marked_answer == y.answer) {
                                     marks = marks + 1;
+                                    flag = 1;
                                     break;
+                                }
+                                if(flag == 0) {
+                                    weakness = y.type;
                                 }
                             }
                         }
                         console.log(marks);
-                        return resolve({"success":true, "data" : marks});
+                        return resolve({"success":true, "data" : marks,"weak":weakness});
                     }
                     else {
                         return resolve({"success":true,"message": "No questions found"});
@@ -126,8 +133,8 @@ function postMarks(model) {
         if(model.email && model.id && model.domain) {
             sqlconnection().then((connection) => {
                 model.connection = connection;
-                let sqlquery = "insert into student_submission_map values(?,?,?,?);";
-                model.connection.query(sqlquery, [model.email,model.id,model.domain,model.marks_secured], (error, results) => {
+                let sqlquery = "insert into student_submission_map values(?,?,?,?,?);";
+                model.connection.query(sqlquery, [model.email,model.id,model.domain,model.marks_secured,model.weak], (error, results) => {
                     model.connection.release();
                     if (error) {
                         return reject(error);

@@ -2,8 +2,7 @@ var clubsDB = require('../db/clubs');
 
 function getUpcoming(model) {
     return new Promise((resolve, reject) => {
-        let date = new Date();
-        
+        let date = new Date(); 
         date = formatDate(date);
         let date2 = new Date();
         date2.setDate(date2.getDate()+10);

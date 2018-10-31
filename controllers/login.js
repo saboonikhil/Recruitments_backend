@@ -21,4 +21,13 @@ router.post('/verifyStudent',(req,res) => {
     });
 });
 
+router.post('/insert',(req,res) => {
+    let body = req.body;
+    studentBIZ.bulkInsert(body).then((data) => {
+        res.send(data);
+    }).catch((error) => {
+        res.send({"success": false, "message" : error});
+    });
+});
+
 module.exports = router;
