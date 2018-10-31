@@ -21,4 +21,22 @@ router.post('/submissions',(req,res) => {
     });
 });
 
+router.get('/distinct',(req,res) => {
+    let model = req.body;
+    analysisBIZ.getDistinctClubs(model).then((result) => {
+        res.send(result);
+    }).catch((error) => {
+        res.send({"success": false, "message" : error});
+    });
+});
+
+router.post('/submissionoverview',(req,res) => {
+    let model = req.body;
+    analysisBIZ.getOverview(model).then((result) => {
+        res.send(result);
+    }).catch((error) => {
+        res.send({"success": false, "message" : error});
+    });
+});
+
 module.exports = router;

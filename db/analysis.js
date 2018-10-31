@@ -68,7 +68,52 @@ function clubsumbission(model) {
     });
 }
 
+function getClubs(model) {
+    return new Promise((resolve, reject) => {
+        sqlconnection().then((connection) => {
+            model.connection = connection;
+            let sqlquery = "select distinct ssm.club_id,c.name from student_submission_map as ssm inner join clubs as c on ssm.club_id = c.id";
+            model.connection.query(sqlquery, [model.club], (error, results) => {
+                model.connection.release();
+                if (error) {
+                    return reject(error);
+                }
+                if (results.length > 0) {
+
+                    return resolve({ "success": true, "data": results });
+                }
+                else {
+                    return resolve({ "success": true, "message": "No submissions found" });
+                }
+            });
+        });
+    });
+}
+
+function overview(model) {
+    return new Promise((resolve, reject) => {
+        sqlconnection().then((connection) => {
+            model.connection = connection;
+            let sqlquery = "select count (regno) from student_submission_map where club_id = ?";
+            model.connection.query(sqlquery, [model.club], (error, results) => {
+                model.connection.release();
+                if (error) {
+                    return reject(error);
+                }
+                if (results.length > 0) {
+                    return resolve({ "success": true, "data": results[0] });
+                }
+                else {
+                    return resolve({ "success": true, "message": "No submissions found" });
+                }
+            });
+        });
+    });
+}
+
 module.exports = {
     getSub,
-    clubsumbission
+    clubsumbission,
+    getClubs,
+    overview
 };
