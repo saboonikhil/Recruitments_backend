@@ -4,8 +4,15 @@ function getSub(model) {
     return new Promise((resolve, reject) => {
         sqlconnection().then((connection) => {
             model.connection = connection;
-            let sqlquery = "select * from student_submission_map order by regno;";
-            model.connection.query(sqlquery, [model.regno], (error, results) => {
+            var sqlquery = "";
+            if(model.club == 0) {
+                sqlquery = "select * from student_submission_map order by regno;";
+            }
+            else {
+                sqlquery = "select * from student_submission_map where club_id = ? order by regno;";
+            }
+            
+            model.connection.query(sqlquery, [model.club], (error, results) => {
                 model.connection.release();
                 if (error) {
                     return reject(error);
@@ -132,10 +139,33 @@ function domainoverview(model) {
     });
 }
 
+function getWeaknesses(model) {
+    return new Promise((resolve, reject) => {
+        sqlconnection().then((connection) => {
+            model.connection = connection;
+            let sqlquery = "select distinct weak from student_submission_map";
+            model.connection.query(sqlquery, [model.club], (error, results) => {
+                model.connection.release();
+                if (error) {
+                    return reject(error);
+                }
+                if (results.length > 0) {
+
+                    return resolve({ "success": true, "data": results });
+                }
+                else {
+                    return resolve({ "success": true, "message": "No submissions found" });
+                }
+            });
+        });
+    });
+}
+
 module.exports = {
     getSub,
     clubsumbission,
     getClubs,
     overview,
-    domainoverview
+    domainoverview,
+    getWeaknesses
 };

@@ -48,4 +48,14 @@ router.post('/domainoverview',(req,res) => {
     });
 });
 
+router.get('/distinctWeak',(req,res) => {
+    let model = req.body;
+    analysisBIZ.getDistinctWeak(model).then((result) => {
+        res.send(result);
+    }).catch((error) => {
+        res.send({"success": false, "message" : error});
+    });
+});
+
+
 module.exports = router;

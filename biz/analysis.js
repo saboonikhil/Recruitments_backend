@@ -50,10 +50,21 @@ function domainView(model) {
     })
 }
 
+function getDistinctWeak(model) {
+    return new Promise((resolve,reject) => {
+        analysis.getWeaknesses(model).then((data) => {
+            return resolve(data);
+        }).catch((error) => {
+            return reject(error);
+        })
+    })
+}
+
 module.exports = {
     getSubmissions,
     getClubSubmissions,
     getDistinctClubs,
     getOverview,
-    domainView
+    domainView,
+    getDistinctWeak
 };
